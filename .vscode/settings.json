@@ -1,0 +1,11 @@
+{
+    "files.autoSave": "afterDelay",
+    "explorer.compactFolders": false,
+    "editor.guides.bracketPairs": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingQuotes": "always",
+    "git.confirmSync": false,
+    "workbench.startupEditor": "none",
+    "workbench.iconTheme": "material-icon-theme",
+    "css.lint.unknownAtRules": "ignore",
+}
