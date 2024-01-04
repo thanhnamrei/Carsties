@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66206C2A-BD4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionService", "src\AuctionService\AuctionService.csproj", "{F9D7574E-6E28-4BFF-AEF3-A076040805B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService", "src\SearchService\SearchService.csproj", "{F46392B3-D592-4EF3-901B-B68E76C530D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +22,13 @@ Global
 		{F9D7574E-6E28-4BFF-AEF3-A076040805B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9D7574E-6E28-4BFF-AEF3-A076040805B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9D7574E-6E28-4BFF-AEF3-A076040805B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46392B3-D592-4EF3-901B-B68E76C530D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46392B3-D592-4EF3-901B-B68E76C530D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46392B3-D592-4EF3-901B-B68E76C530D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46392B3-D592-4EF3-901B-B68E76C530D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F9D7574E-6E28-4BFF-AEF3-A076040805B3} = {66206C2A-BD4C-48CB-8924-168445464B72}
+		{F46392B3-D592-4EF3-901B-B68E76C530D2} = {66206C2A-BD4C-48CB-8924-168445464B72}
 	EndGlobalSection
 EndGlobal
