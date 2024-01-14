@@ -4,6 +4,7 @@ using AuctionService.Entities;
 using AutoMapper;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ public class AuctionsController : ControllerBase
     private readonly IMapper mapper;
     private readonly IPublishEndpoint _publishEndpoint;
 
-    public AuctionsController(AuctionDbContext context, IMapper mapper,IPublishEndpoint publishEndpoint)
+    public AuctionsController(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
     {
         this.context = context;
         this.mapper = mapper;
@@ -25,7 +26,8 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions() {
+    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions()
+    {
         var auctions = await context.Auctions.Include(x => x.Item)
             .OrderBy(x => x.Item.Model)
             .ToListAsync();
@@ -34,22 +36,25 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AuctionDto>> GetAuctionById(Guid id) {
+    public async Task<ActionResult<AuctionDto>> GetAuctionById(Guid id)
+    {
         var auction = await context.Auctions.Include(x => x.Item)
             .OrderBy(x => x.Item.Make)
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        if(auction is null) return NotFound();
+        if (auction is null) return NotFound();
 
         return mapper.Map<AuctionDto>(auction);
     }
 
+    [Authorize]
     [HttpPost]
-    public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto auctionDto) {
+    public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto auctionDto)
+    {
         var auction = mapper.Map<Auction>(auctionDto);
 
         //TODO
-        auction.Seller = "test";
+        auction.Seller = User.Identity.Name;
 
         context.Auctions.Add(auction);
 
@@ -59,18 +64,21 @@ public class AuctionsController : ControllerBase
 
         await _publishEndpoint.Publish(mapper.Map<AuctionCreated>(newAuction));
 
-        if(!result) return BadRequest("Could not save changes to the DB");
+        if (!result) return BadRequest("Could not save changes to the DB");
 
-        return CreatedAtAction(nameof(GetAuctionById), new {auction.Id}, newAuction);
+        return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, newAuction);
     }
 
-
+    [Authorize]
     [HttpPut("{id}")]
-    public async Task<ActionResult<AuctionDto>> UpdateAuction(Guid id, UpdateAuctionDto updateAuctionDto) {
+    public async Task<ActionResult<AuctionDto>> UpdateAuction(Guid id, UpdateAuctionDto updateAuctionDto)
+    {
         var auction = await context.Auctions.Include(x => x.Item)
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        if(auction is null) return NotFound();
+        if (auction is null) return NotFound();
+
+        if (auction.Seller != User.Identity.Name) return Forbid();
 
         //TODO
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
@@ -81,26 +89,31 @@ public class AuctionsController : ControllerBase
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
 
         var result = await context.SaveChangesAsync() > 0;
-        if(result) return Ok();
+        if (result) return Ok();
 
         return BadRequest("Problem saving changes");
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
-    public async Task<ActionResult<AuctionDto>> DeleteAuction(Guid id) {
+    public async Task<ActionResult<AuctionDto>> DeleteAuction(Guid id)
+    {
         var auction = await context.Auctions.FindAsync(id);
 
-        if(auction is null) return NotFound();
+        if (auction is null) return NotFound();
+
+        if (auction.Seller != User.Identity.Name) return Forbid();
+
 
         //TODO
         context.Auctions.Remove(auction);
 
         var result = await context.SaveChangesAsync() > 0;
-        if(result) return Ok();
+        if (result) return Ok();
 
         return BadRequest("Problem saving changes");
     }
 
 
-    
+
 }
