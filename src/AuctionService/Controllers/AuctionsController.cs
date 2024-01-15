@@ -2,6 +2,7 @@
 using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
@@ -26,13 +27,15 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions()
-    {
-        var auctions = await context.Auctions.Include(x => x.Item)
-            .OrderBy(x => x.Item.Model)
-            .ToListAsync();
+    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string date) {
+        var query = context.Auctions.OrderBy(x => x.Item.Make).AsQueryable();
 
-        return mapper.Map<List<AuctionDto>>(auctions);
+        if(!string.IsNullOrEmpty(date)) 
+        {
+            query = query.Where(x => x.UpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
+        }
+
+        return await query.ProjectTo<AuctionDto>(mapper.ConfigurationProvider).ToListAsync();
     }
 
     [HttpGet("{id}")]
@@ -58,11 +61,11 @@ public class AuctionsController : ControllerBase
 
         context.Auctions.Add(auction);
 
-        var result = await context.SaveChangesAsync() > 0;
-
         var newAuction = mapper.Map<AuctionDto>(auction);
 
         await _publishEndpoint.Publish(mapper.Map<AuctionCreated>(newAuction));
+
+        var result = await context.SaveChangesAsync() > 0;
 
         if (!result) return BadRequest("Could not save changes to the DB");
 
