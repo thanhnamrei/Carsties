@@ -29,6 +29,7 @@ builder.Services.AddMassTransit(x => {
         cfg.ConfigureEndpoints(context);
     });
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt => {
         opt.Authority = builder.Configuration["IdentityServiceUrl"];
@@ -37,6 +38,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         opt.TokenValidationParameters.NameClaimType = "username";
 
     });
+
 
 var app = builder.Build();
 
