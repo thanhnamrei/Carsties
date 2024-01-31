@@ -37,7 +37,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 RequirePkce = false,
                  AllowedScopes =  {"openid","profile", "auctionApp"},
-                RedirectUris= {"https://www.localhost:3000/api/callback/id-server"},
+                RedirectUris= {"http://localhost:3000/api/auth/callback/id-server"},
                 AlwaysIncludeUserClaimsInIdToken = true
             }
         };
