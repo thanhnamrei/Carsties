@@ -3,6 +3,7 @@ using IdentityService.Data;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace IdentityService;
@@ -41,6 +42,10 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<CustomerProfileService>();
+
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.Cookie.SameSite = SameSiteMode.Lax; // using http 
+        });
 
         builder.Services.AddAuthentication();
             //.AddGoogle(options =>
