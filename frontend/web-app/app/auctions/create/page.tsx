@@ -1,7 +1,12 @@
+import Heading from '@/app/components/Heading'
 import React from 'react'
+import AuctionForm from '../AuctionForm'
 
-export default function page() {
+export default function Create() {
   return (
-    <div>page</div>
+    <div className=' mx-auto max-w-[75%] shadow-lg p-10 rounded-lg bg-white'>
+      <Heading title='Sell your car' subtitle='Please enter details info of your car'/>
+      <AuctionForm/>
+    </div>
   )
 }
