@@ -3,6 +3,11 @@ import { Button, TextInput } from "flowbite-react";
 import React, { useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
+import DateInput from "../components/DateInput";
+import { createAuction } from "../actions/auctionActions";
+import { error } from "console";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AuctionForm() {
   const {
@@ -14,13 +19,23 @@ export default function AuctionForm() {
     mode: 'onTouched'
   });
 
+  const router = useRouter();
+
 
   useEffect(() => {
     setFocus('make');
-  })
+  },[setFocus])
 
-  function onSubmit(data: FieldValues) {
-    console.log(data);
+   async function onSubmit(data: FieldValues) {
+    try {
+      const res = await createAuction(data);
+      if(res.error) throw res.error;
+
+      router.push(`/auctions/details/${res.id}`)
+    } catch(error: any) {
+      console.log('error');
+      toast.error(error.status + ' ' + error.message)
+    }
   }
   return (
     <form className="flex flex-col mt-3" onSubmit={handleSubmit(onSubmit)}>
@@ -74,11 +89,12 @@ export default function AuctionForm() {
           type="number"
           rules={{ required: "Year is required" }}
         />
-        <Input
+        <DateInput
           label="Auction end date/time"
           name="auctionEnd"
           control={control}
-          type="date"
+          dateFormat='dd MMM yy h: mm a '
+          showTimeSelect
           rules={{ required: "Auction end date is required" }}
         />
       </div>
