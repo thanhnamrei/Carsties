@@ -54,7 +54,7 @@ async function getHeaders () {
 
     const headers = {'Content-Type': 'application/json'} as any
     if(token) {
-         // headers.Authorization = 'Bearer ' + token.access_token;
+         headers.Authorization = 'Bearer ' + token.access_token;
     }
     console.log(headers);
     return headers;

@@ -91,6 +91,7 @@ public class AuctionsController : ControllerBase
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
 
+        await _publishEndpoint.Publish(mapper.Map<AuctionUpdated>(auction));
         var result = await context.SaveChangesAsync() > 0;
         if (result) return Ok();
 
