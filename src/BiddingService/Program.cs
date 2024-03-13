@@ -6,6 +6,7 @@ using MongoDB.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMassTransit(x => {
 
@@ -38,6 +39,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
