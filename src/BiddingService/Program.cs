@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddHostedService<CheckAuctionFinished>();
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<GrpcAuctionClient>();
 
 var app = builder.Build();
 
