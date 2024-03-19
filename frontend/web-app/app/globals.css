@@ -5,3 +5,9 @@
 .react-datepicker-wrapper {
     width: 100%;
 }
+
+@layer components {
+    .input-customer {
+        @apply flex-grow pl-5 bg-transparent border-transparent focus:border-transparent focus:ring-0 
+    }
+}

@@ -30,6 +30,6 @@ export type Bid = {
     auctionId: string;
     bidder: string;
     bidTime: string;
-    amount: string;
+    amount: number;
     bidStatus: string;
 }

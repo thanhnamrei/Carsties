@@ -1,3 +1,4 @@
+'use client'
 import { Bid } from '@/types'
 import { format } from 'date-fns';
 import React from 'react'
@@ -40,7 +41,7 @@ export default function BidItem({bid}: Props) {
     }>
         <div className='flex flex-col'>
             <span>Bidder: {bid.bidder}</span>
-            <span className=' text-gray-700 text-sm'>Time: {format(new Date(bid.bidTime), 'dd MMM yyyy h:mm a')}</span>
+            <span className=' text-gray-700 text-sm'>Time: {bid.bidTime}</span>
         </div>
         <div className=' flex flex-col text-right'>
             <div className=' text-xl font-semibold'>${bid.amount}</div>
