@@ -1,4 +1,4 @@
-import { getDetailedViewData } from "@/app/actions/auctionActions";
+import { getBidsFroAuction, getDetailedViewData } from "@/app/actions/auctionActions";
 import Heading from "@/app/components/Heading";
 import React from "react";
 import CountDownTimer from "../../CountDownTimer";
@@ -7,10 +7,12 @@ import DetailedSpecs from "./DetailedSpecs";
 import { getCurrentUser } from "@/app/actions/authActions";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
+import BidItem from "./BidItem";
 
 export default async function Details({ params }: { params: { id: string } }) {
   const data = await getDetailedViewData(params.id);
   const user = await getCurrentUser();
+  const bids = await getBidsFroAuction(params.id);
   return (
     <div>
       <div className=" flex justify-between">
@@ -37,6 +39,9 @@ export default async function Details({ params }: { params: { id: string } }) {
 
         <div className=" border-2  rounded-lg bg-gray-100">
           <Heading title="Bids" />
+          {bids.map(bid => (
+            <BidItem key={bid.id} bid={bid}/>
+          ))}
         </div>
       </div>
 
