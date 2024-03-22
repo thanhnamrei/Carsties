@@ -2,7 +2,7 @@
 import { Auction, Bid, PagedResult } from "@/types";
 import { RedirectType } from "next/navigation";
 import { getTokenWorkaround } from "./authActions";
-import { fetchWrapper } from "@/lib/fetchWrapper";
+import { fetchWrapper } from "@/app/lib/fetchWrapper";
 import { FieldValues } from "react-hook-form";
 
 export async function getData(query: string): Promise<PagedResult<Auction>> {

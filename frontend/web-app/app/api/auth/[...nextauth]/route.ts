@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth";
+import NextAuth, {NextAuthOptions } from "next-auth";
 import DuendeIDS6Provider from "next-auth/providers/duende-identity-server6";
 
 export const authOptions: NextAuthOptions = {
@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
       id: "id-server",
       clientId: "nextApp",
       clientSecret: "secret",
-      issuer: "http://localhost:5003",
+      issuer: process.env.ID_URL,
       authorization: {
         params: {
           scope: "openid profile auctionApp",
