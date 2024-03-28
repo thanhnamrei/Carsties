@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { Auction } from "@/types";
 
 type Props = {
-  auction: Auction;
+  auction?: Auction;
 };
 
 export default function AuctionForm({ auction }: Props) {
@@ -34,7 +34,7 @@ export default function AuctionForm({ auction }: Props) {
       reset({ make, model, color, year, mileage });
     }
     setFocus("make");
-  }, [setFocus]);
+  }, [setFocus,reset,auction]);
 
   async function onSubmit(data: FieldValues) {
     try {
@@ -44,8 +44,8 @@ export default function AuctionForm({ auction }: Props) {
         res = await createAuction(data);
         id = res.id;
       } else {
-        res = await updateAuction(data, auction.id);
-        id = auction.id;
+        res = await updateAuction(data, auction!.id);
+        id = auction!.id;
       }
 
       if (res.error) throw res.error;

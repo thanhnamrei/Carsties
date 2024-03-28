@@ -6,7 +6,8 @@ import { fetchWrapper } from "@/app/lib/fetchWrapper";
 import { FieldValues } from "react-hook-form";
 
 export async function getData(query: string): Promise<PagedResult<Auction>> {
-    const data = await fetchWrapper.get(`search?${query}`);
+    console.log(query)
+    const data = await fetchWrapper.get(`search${query}`);
     return data;
 }
   
